@@ -9,9 +9,12 @@ YandexDiskClient::YandexDiskClient(String auth_token)
 bool YandexDiskClient::upload(String filename, uint8_t *buf, uint16_t len)
 {
     String req = baseUrl + "resources/upload" + "?path=" + filename;
+
     uint16_t result = request("GET", req);
-    if (result != HTTP_OK)
+    if (result != HTTP_OK){
+        Serial.printf("upload failed (%d): %s\n", result, req.c_str());
         return false;
+    }
 
     String response = client.readString();
     DynamicJsonDocument doc(1024);
@@ -33,8 +36,10 @@ bool YandexDiskClient::download(String filename, uint8_t *buf, uint16_t *len)
 {
     String req = baseUrl + "resources/download" + "?path=" + filename;
     uint16_t result = request("GET", req);
-    if (result != HTTP_OK)
+    if (result != HTTP_OK){
+        Serial.printf("upload failed (%d): %s\n", result, req.c_str());
         return false;
+    }
     String response = client.readString();
     DynamicJsonDocument doc(1024);
     deserializeJson(doc, response);
