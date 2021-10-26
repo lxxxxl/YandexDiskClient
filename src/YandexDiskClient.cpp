@@ -124,7 +124,7 @@ uint16_t YandexDiskClient::request(String method, String url, uint8_t* data, uin
     client.print("Connection: close\r\n\r\n");
     if (data != NULL){
         for (uint16_t i = 0; i < len; i++){
-            client.print(data[i]);
+            client.print((char)data[i]);
         }
     }
 
